@@ -1,6 +1,7 @@
 from unittest import TestCase
 
-from use_cases.fibonacci_numbers import calculate_fibonacci_number_by_order
+from use_cases.fibonacci_numbers import calculate_fibonacci_number_by_order, \
+    calculate_fibonacci_sequence
 
 
 class DefaultTestCase(TestCase):
@@ -36,3 +37,52 @@ class DefaultTestCase(TestCase):
         self.assertEqual(str(e.exception),
                          "calculate_fibonacci_number_by_order() missing 1 "
                          "required positional argument: 'order'")
+
+    def test_calculate_fibonacci_sequence(self):
+        # Fibonacci sequence from 0 to 0
+        self.assertEqual([0], list(calculate_fibonacci_sequence(0, 0)))
+        # Fibonacci sequence from 0 to 1
+        self.assertEqual([0, 1], list(calculate_fibonacci_sequence(0, 1)))
+        # Fibonacci sequence from 0 to 2
+        self.assertEqual([0, 1, 1], list(calculate_fibonacci_sequence(0, 2)))
+        # Fibonacci sequence from 0 to 3
+        self.assertEqual([0, 1, 1, 2],
+                         list(calculate_fibonacci_sequence(0, 3)))
+        # Fibonacci sequence from 2 to 3
+        self.assertEqual([1, 2], list(calculate_fibonacci_sequence(2, 3)))
+        # Fibonacci sequence from 18 to 21
+        self.assertEqual([2584, 4181, 6765, 10946],
+                         list(calculate_fibonacci_sequence(18, 21)))
+        # Incorrect start type
+        with self.assertRaises(TypeError) as e:
+            list(calculate_fibonacci_sequence('x', 1))
+        self.assertEqual(str(e.exception), 'start must be integer')
+        # Incorrect end type
+        with self.assertRaises(TypeError) as e:
+            list(calculate_fibonacci_sequence(1, 'x'))
+        self.assertEqual(str(e.exception), 'end must be integer')
+        # Negative start
+        with self.assertRaises(ValueError) as e:
+            list(calculate_fibonacci_sequence(-1, 1))
+        self.assertEqual(str(e.exception), 'start must be positive')
+        # Negative end
+        with self.assertRaises(ValueError) as e:
+            list(calculate_fibonacci_sequence(1, -1))
+        self.assertEqual(str(e.exception), 'end must be positive')
+        # Start greater than or equal to end
+        with self.assertRaises(ValueError) as e:
+            list(calculate_fibonacci_sequence(2, 1))
+        self.assertEqual(str(e.exception), 'end must be greater than or '
+                                           'equal to start')
+        # Empty arguments
+        with self.assertRaises(TypeError) as e:
+            list(calculate_fibonacci_sequence())
+        self.assertEqual(str(e.exception), "calculate_fibonacci_sequence() "
+                                           "missing 2 required positional "
+                                           "arguments: 'start' and 'end'")
+        # One argument
+        with self.assertRaises(TypeError) as e:
+            list(calculate_fibonacci_sequence(1))
+        self.assertEqual(str(e.exception), "calculate_fibonacci_sequence() "
+                                           "missing 1 required positional "
+                                           "argument: 'end'")
