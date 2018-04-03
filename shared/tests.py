@@ -25,7 +25,7 @@ class RequestObjectTestCase(TestCase):
 
 
 class UseCaseTestCase(TestCase):
-    def test_use_case_cannot_process_valid_requests(self):
+    def test_cannot_process_valid_requests(self):
         valid_request_object = mock.MagicMock()
         valid_request_object.__bool__.return_value = True
 
@@ -34,32 +34,35 @@ class UseCaseTestCase(TestCase):
 
         self.assertFalse(response)
         self.assertEqual(response.type, ResponseFailure.SYSTEM_ERROR)
-        self.assertEqual(response.message, 'NotImplementedError: process_request() not implemented by UseCase class')
+        self.assertEqual(
+            response.message,
+            'NotImplementedError: process_request() not implemented by '
+            'UseCase class')
 
-    def test_use_case_can_process_invalid_requests_and_returns_response_failure(self):
+    def test_can_process_invalid_requests_and_returns_response_failure(self):
         invalid_request_object = InvalidRequestObject()
-        invalid_request_object.add_error('someparam', 'somemessage')
+        invalid_request_object.add_error('some_param', 'some_message')
 
         use_case = UseCase()
         response = use_case.execute(invalid_request_object)
 
         self.assertFalse(response)
         self.assertEqual(response.type, ResponseFailure.PARAMETERS_ERROR)
-        self.assertEqual(response.message, 'someparam: somemessage')
+        self.assertEqual(response.message, 'some_param: some_message')
 
-    def test_use_case_can_manage_generic_exception_from_process_request(self):
+    def test_can_manage_generic_exception_from_process_request(self):
         use_case = UseCase()
 
         class TestException(Exception):
             pass
 
         use_case.process_request = mock.Mock()
-        use_case.process_request.side_effect = TestException('somemessage')
+        use_case.process_request.side_effect = TestException('some_message')
         response = use_case.execute(mock.Mock)
 
         self.assertFalse(response)
         self.assertEqual(response.type, ResponseFailure.SYSTEM_ERROR)
-        self.assertEqual(response.message, 'TestException: somemessage')
+        self.assertEqual(response.message, 'TestException: some_message')
 
 
 class ResponseObjectTestCase(TestCase):
@@ -72,7 +75,8 @@ class ResponseObjectTestCase(TestCase):
         self.assertTrue(bool(ResponseSuccess(self.response_value)))
 
     def test_response_failure_is_false(self):
-        self.assertFalse(bool(ResponseFailure(self.response_type, self.response_message)))
+        self.assertFalse(bool(ResponseFailure(self.response_type,
+                                              self.response_message)))
 
     def test_response_success_contains_value(self):
         response = ResponseSuccess(self.response_value)
@@ -88,17 +92,20 @@ class ResponseObjectTestCase(TestCase):
     def test_response_failure_contains_value(self):
         response = ResponseFailure(self.response_type, self.response_message)
 
-        self.assertEqual(response.value, {'type': self.response_type, 'message': self.response_message})
+        self.assertEqual(response.value, {'type': self.response_type,
+                                          'message': self.response_message})
 
     def test_response_failure_initialization_with_exception(self):
-        response = ResponseFailure(self.response_type, Exception('Just an error message'))
+        response = ResponseFailure(self.response_type,
+                                   Exception('Just an error message'))
 
         self.assertFalse(bool(response))
         self.assertEqual(response.type, self.response_type)
         self.assertEqual(response.message, "Exception: Just an error message")
 
     def test_response_failure_from_invalid_request_object(self):
-        response = ResponseFailure.build_from_invalid_request_object(InvalidRequestObject())
+        response = ResponseFailure.build_from_invalid_request_object(
+            InvalidRequestObject())
 
         self.assertFalse(bool(response))
 
@@ -107,11 +114,13 @@ class ResponseObjectTestCase(TestCase):
         request_object.add_error('path', 'Is mandatory')
         request_object.add_error('path', "can't be blank")
 
-        response = ResponseFailure.build_from_invalid_request_object(request_object)
+        response = ResponseFailure.build_from_invalid_request_object(
+            request_object)
 
         self.assertFalse(bool(response))
         self.assertEqual(response.type, ResponseFailure.PARAMETERS_ERROR)
-        self.assertEqual(response.message, "path: Is mandatory\npath: can't be blank")
+        self.assertEqual(response.message, 
+                         "path: Is mandatory\npath: can't be blank")
 
     def test_response_failure_build_resource_error(self):
         response = ResponseFailure.build_resource_error("test message")
