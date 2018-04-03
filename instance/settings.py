@@ -1,5 +1,7 @@
 import os
 
+import redis
+
 
 class Config(object):
     """Parent configuration class."""
@@ -35,3 +37,6 @@ app_config = {
     'staging': StagingConfig,
     'production': ProductionConfig,
 }
+
+redis_client = redis.from_url(os.getenv('REDIS_URL'))
+FIBONACCI_NUMBERS_REDIS_KEY = 'fibonacci_numbers'
