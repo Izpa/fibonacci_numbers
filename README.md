@@ -8,12 +8,12 @@ Python 3.6
 Flask 0.12.2
 
 ## Download
-https://github.com/Izpa/fibonacci_numbers/archive/master.zip
+https://gitlab.com/MarkovArtemP/fibonacci_numbers/repository/develop/archive.zip
 
 or
 
 ```
-git clone git@github.com:Izpa/fibonacci_numbers.git
+git clone git@gitlab.com:MarkovArtemP/fibonacci_numbers.git
 ```
 
 ## Installation
