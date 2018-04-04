@@ -4,8 +4,11 @@ from shared.use_case import UseCase
 
 
 class GetFibonacciSequenceUseCase(UseCase):
+    def process_request(self, request_object):
+        pass
+
     @staticmethod
-    def calculate_fibonacci_number(order: int):
+    def _calculate_fibonacci_number(order: int):
         if not isinstance(order, int):
             raise TypeError('order must be integer')
         if order < 0:
@@ -19,7 +22,7 @@ class GetFibonacciSequenceUseCase(UseCase):
         return round((pow(left, order) - pow(right, order)) / sqrt_five)
 
     @staticmethod
-    def calculate_fibonacci_sequence(start: int, end: int):
+    def _calculate_fibonacci_sequence(start: int, end: int):
         if not isinstance(start, int):
             raise TypeError('start must be integer')
         if not isinstance(end, int):
@@ -31,8 +34,8 @@ class GetFibonacciSequenceUseCase(UseCase):
         if end < start:
             raise ValueError('end must be greater than or equal to start')
 
-        first = GetFibonacciSequenceUseCase.calculate_fibonacci_number(start)
-        second = GetFibonacciSequenceUseCase.calculate_fibonacci_number(
+        first = GetFibonacciSequenceUseCase._calculate_fibonacci_number(start)
+        second = GetFibonacciSequenceUseCase._calculate_fibonacci_number(
             start + 1)
         for i in range(end+1-start):
             yield first
