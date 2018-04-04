@@ -40,3 +40,8 @@ class GetFibonacciSequenceUseCase(UseCase):
         for i in range(end+1-start):
             yield first
             first, second = second, first + second
+
+    @staticmethod
+    def _get_fibonacci_sequence(start: int, end: int):
+        return GetFibonacciSequenceUseCase._calculate_fibonacci_sequence(
+            start, end)
