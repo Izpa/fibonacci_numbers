@@ -38,5 +38,6 @@ app_config = {
     'production': ProductionConfig,
 }
 
-redis_client = redis.from_url(os.getenv('REDIS_URL'))
+redis_url = os.getenv('REDIS_URL', 'redis://localhost:6379/0')
+redis_client = redis.from_url(redis_url)
 FIBONACCI_NUMBERS_REDIS_KEY = 'fibonacci_numbers'
