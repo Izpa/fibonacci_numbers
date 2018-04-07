@@ -1,0 +1,10 @@
+[flake8]
+import-order-style = google
+inline-quotes = '
+select=
+ignore=
+count = True
+statistics = True
+format = pylint
+max-line-length = 79
+max_complexity = 10

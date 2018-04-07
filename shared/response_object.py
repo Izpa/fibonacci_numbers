@@ -22,7 +22,7 @@ class ResponseFailure(object):
 
     def _format_message(self, msg):
         if isinstance(msg, Exception):
-            return "{}: {}".format(msg.__class__.__name__, "{}".format(msg))
+            return '{}: {}'.format(msg.__class__.__name__, '{}'.format(msg))
         return msg
 
     @property
@@ -46,6 +46,6 @@ class ResponseFailure(object):
 
     @classmethod
     def build_from_invalid_request_object(cls, invalid_request_object):
-        message = "\n".join(["{}: {}".format(err['parameter'], err['message'])
+        message = '\n'.join(['{}: {}'.format(err['parameter'], err['message'])
                              for err in invalid_request_object.errors])
         return cls.build_parameters_error(message)

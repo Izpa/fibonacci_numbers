@@ -1,4 +1,4 @@
-from unittest import mock, main, TestCase
+from unittest import mock, TestCase
 
 from shared.request_object import InvalidRequestObject, ValidRequestObject
 from shared.response_object import ResponseFailure, ResponseSuccess
@@ -101,7 +101,7 @@ class ResponseObjectTestCase(TestCase):
 
         self.assertFalse(bool(response))
         self.assertEqual(response.type, self.response_type)
-        self.assertEqual(response.message, "Exception: Just an error message")
+        self.assertEqual(response.message, 'Exception: Just an error message')
 
     def test_response_failure_from_invalid_request_object(self):
         response = ResponseFailure.build_from_invalid_request_object(
@@ -119,30 +119,26 @@ class ResponseObjectTestCase(TestCase):
 
         self.assertFalse(bool(response))
         self.assertEqual(response.type, ResponseFailure.PARAMETERS_ERROR)
-        self.assertEqual(response.message, 
+        self.assertEqual(response.message,
                          "path: Is mandatory\npath: can't be blank")
 
     def test_response_failure_build_resource_error(self):
-        response = ResponseFailure.build_resource_error("test message")
+        response = ResponseFailure.build_resource_error('test message')
 
         self.assertFalse(bool(response))
         self.assertEqual(response.type, ResponseFailure.RESOURCE_ERROR)
-        self.assertEqual(response.message, "test message")
+        self.assertEqual(response.message, 'test message')
 
     def test_response_failure_build_parameters_error(self):
-        response = ResponseFailure.build_parameters_error("test message")
+        response = ResponseFailure.build_parameters_error('test message')
 
         self.assertFalse(bool(response))
         self.assertEqual(response.type, ResponseFailure.PARAMETERS_ERROR)
-        self.assertEqual(response.message, "test message")
+        self.assertEqual(response.message, 'test message')
 
     def test_response_failure_build_system_error(self):
-        response = ResponseFailure.build_system_error("test message")
+        response = ResponseFailure.build_system_error('test message')
 
         self.assertFalse(bool(response))
         self.assertEqual(response.type, ResponseFailure.SYSTEM_ERROR)
-        self.assertEqual(response.message, "test message")
-
-
-if __name__ == '__main__':
-    main()
+        self.assertEqual(response.message, 'test message')

@@ -1,11 +1,20 @@
+"""Module for fibonacci sequence use case class"""
 from math import sqrt
 
+from shared.response_object import ResponseSuccess
 from shared.use_case import UseCase
 
 
 class GetFibonacciSequenceUseCase(UseCase):
+    def __init__(self, repo):
+        """Set repo."""
+        self.repo = repo
+
     def process_request(self, request_object):
-        pass
+        start = request_object.start
+        end = request_object.end
+        numbers = self._get_fibonacci_sequence(start, end)
+        return ResponseSuccess(numbers)
 
     @staticmethod
     def _calculate_fibonacci_number(order: int):
@@ -21,8 +30,7 @@ class GetFibonacciSequenceUseCase(UseCase):
 
         return round((pow(left, order) - pow(right, order)) / sqrt_five)
 
-    @staticmethod
-    def _calculate_fibonacci_sequence(start: int, end: int):
+    def _get_fibonacci_sequence(self, start: int, end: int):
         if not isinstance(start, int):
             raise TypeError('start must be integer')
         if not isinstance(end, int):
@@ -34,14 +42,18 @@ class GetFibonacciSequenceUseCase(UseCase):
         if end < start:
             raise ValueError('end must be greater than or equal to start')
 
-        first = GetFibonacciSequenceUseCase._calculate_fibonacci_number(start)
-        second = GetFibonacciSequenceUseCase._calculate_fibonacci_number(
-            start + 1)
-        for i in range(end+1-start):
-            yield first
-            first, second = second, first + second
+        numbers = self.repo.numbers_list(start, end)
+        numbers_for_save = {}
 
-    @staticmethod
-    def _get_fibonacci_sequence(start: int, end: int):
-        return GetFibonacciSequenceUseCase._calculate_fibonacci_sequence(
-            start, end)
+        none_indices = (
+            index for index, number in enumerate(numbers) if number is None)
+        for index in none_indices:
+            if index < 2:
+                numbers[index] = self._calculate_fibonacci_number(start+index)
+            else:
+                numbers[index] = numbers[index-1] + numbers[index-2]
+            numbers_for_save[str(start+index)] = numbers[0]
+
+        self.repo.add_numbers(**numbers_for_save)
+
+        return numbers

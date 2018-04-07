@@ -1,8 +1,12 @@
-from shared.request_object import ValidRequestObject, InvalidRequestObject
+"""Request object classes."""
+from shared.request_object import InvalidRequestObject, ValidRequestObject
 
 
 class GetFibonacciSequenceRequestObject(ValidRequestObject):
+    """Request object foe fibonacci sequence."""
+
     def __new__(cls, start: int = None, end: int = None):
+        """Replace returned object."""
         invalid_request = InvalidRequestObject()
         instance = super().__new__(cls)
 

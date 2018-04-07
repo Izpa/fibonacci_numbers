@@ -1,3 +1,4 @@
+"""Module for abstract use case class"""
 from shared.response_object import ResponseFailure
 
 
@@ -11,8 +12,8 @@ class UseCase(object):
             return self.process_request(request_object)
         except Exception as exc:
             return ResponseFailure.build_system_error(
-                "{}: {}".format(exc.__class__.__name__, "{}".format(exc)))
+                '{}: {}'.format(exc.__class__.__name__, '{}'.format(exc)))
 
     def process_request(self, request_object):
         raise NotImplementedError(
-            "process_request() not implemented by UseCase class")
+            'process_request() not implemented by UseCase class')
