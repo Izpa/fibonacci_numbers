@@ -1,4 +1,4 @@
-"""Module for abstract use case class"""
+"""Module for abstract use case class."""
 from shared.response_object import ResponseFailure
 
 

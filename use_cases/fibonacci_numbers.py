@@ -1,4 +1,4 @@
-"""Module for fibonacci sequence use case class"""
+"""Module for fibonacci sequence use case class."""
 from math import sqrt
 
 from shared.response_object import ResponseSuccess
@@ -52,7 +52,7 @@ class GetFibonacciSequenceUseCase(UseCase):
                 numbers[index] = self._calculate_fibonacci_number(start+index)
             else:
                 numbers[index] = numbers[index-1] + numbers[index-2]
-            numbers_for_save[str(start+index)] = numbers[0]
+            numbers_for_save[str(start+index)] = numbers[index]
 
         self.repo.add_numbers(**numbers_for_save)
 

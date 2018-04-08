@@ -1,5 +1,6 @@
 """Test cases for all in use cases package."""
 from unittest import TestCase
+from unittest.mock import MagicMock
 
 from use_cases.fibonacci_numbers import GetFibonacciSequenceUseCase
 from use_cases.request_objects import GetFibonacciSequenceRequestObject
@@ -10,7 +11,7 @@ class RepoMock:
 
     def __init__(self):
         """Set numbers dict."""
-        self.numbers = {i: None for i in range(100)}
+        self._numbers = {str(i): None for i in range(100)}
 
     def numbers_list(self, start: int, end: int):
         """
@@ -20,7 +21,7 @@ class RepoMock:
         :param end: end order of numbers sequence
         :return: list of fibonacci numbers
         """
-        return [self.numbers[i] for i in range(start, end+1)]
+        return [self._numbers[str(i)] for i in range(start, end + 1)]
 
     def add_numbers(self, **numbers):
         """
@@ -30,7 +31,7 @@ class RepoMock:
         value - fibonacci number
         :return:
         """
-        self.numbers.update(numbers)
+        self._numbers.update(numbers)
 
 
 class GetFibonacciSequenceUseCaseTestCase(TestCase):
@@ -213,6 +214,53 @@ class GetFibonacciSequenceUseCaseTestCase(TestCase):
             str(e.exception),
             '_get_fibonacci_sequence() missing 1 required positional '
             "argument: 'end'")
+
+    def test_fibonacci_sequence_add_into_repo(self):
+        numbers = {str(i): None for i in range(100)}
+        self.assertEqual(self.use_case.repo._numbers,
+                         numbers)
+        self.use_case._get_fibonacci_sequence(18, 21)
+        numbers.update({
+            '18': 2584,
+            '19': 4181,
+            '20': 6765,
+            '21': 10946
+        })
+        self.assertEqual(self.use_case.repo._numbers,
+                         numbers)
+
+    def test_exist_fibonacci_sequence_get_from_repo_without_calculating(self):
+        self.use_case.repo._numbers.update({
+            '18': 2584,
+            '19': 4181,
+            '20': 6765,
+            '21': 10946
+        })
+        self.use_case._calculate_fibonacci_number = MagicMock()
+        self.use_case._get_fibonacci_sequence(18, 21)
+        self.assertEqual(
+            len(self.use_case._calculate_fibonacci_number.mock_calls), 0)
+
+    def test_process_request_handles_bad_request(self):
+        request_object = GetFibonacciSequenceRequestObject()
+
+        response_object = self.use_case.execute(request_object)
+
+        self.assertFalse(bool(response_object))
+        self.assertEqual(
+            response_object.value,
+            {'message': 'start: is required\n'
+                        'end: is required\n'
+                        'end: must be integer',
+             'type': 'PARAMETERS_ERROR'})
+
+    def test_process_request_with_correct_request(self):
+        request_object = GetFibonacciSequenceRequestObject(18, 21)
+        response_object = self.use_case.execute(request_object)
+
+        self.assertTrue(bool(response_object))
+        self.assertListEqual(response_object.value,
+                             [2584, 4181, 6765, 10946])
 
 
 class GetFibonacciSequenceRequestObjectTestCase(TestCase):
