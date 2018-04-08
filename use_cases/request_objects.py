@@ -5,11 +5,9 @@ from shared.request_object import InvalidRequestObject, ValidRequestObject
 class GetFibonacciSequenceRequestObject(ValidRequestObject):
     """Request object foe fibonacci sequence."""
 
-    def __new__(cls, start=None, end=None):
-        """Replace returned object."""
+    @staticmethod
+    def _validate_params(start=None, end=None):
         invalid_request = InvalidRequestObject()
-        instance = super().__new__(cls)
-
         if start is None:
             invalid_request.add_error('start', 'is required')
         else:
@@ -32,9 +30,15 @@ class GetFibonacciSequenceRequestObject(ValidRequestObject):
             invalid_request.add_error('end',
                                       'must be greater than or equal to start')
 
+        return invalid_request, start, end
+
+    def __new__(cls, start=None, end=None):
+        """Replace returned object."""
+        instance = super().__new__(cls)
+
+        invalid_request, start, end = cls._validate_params(start, end)
         if invalid_request.has_errors():
             return invalid_request
-
         instance.start = start
         instance.end = end
         return instance

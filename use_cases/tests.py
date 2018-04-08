@@ -373,3 +373,117 @@ class GetFibonacciSequenceRequestObjectTestCase(TestCase):
         self.assertFalse(request_object)
         self.assertEqual(request_object.errors[0]['parameter'], 'end')
         self.assertEqual(request_object.errors[0]['message'], 'is required')
+
+    def test_validate_params_with_correct_args(self):
+        """
+        Create request object with corrects.
+
+        Expect valid request object.
+        """
+        invalid_request, start, end = self.request_object._validate_params(1,
+                                                                           2)
+
+        self.assertFalse(invalid_request.has_errors())
+        self.assertEqual(start, 1)
+        self.assertEqual(end, 2)
+
+    def test_validate_params_with_incorrect_start_type(self):
+        """
+        Create request object with incorrect type of start.
+
+        Expect invalid request object with error on start parameter.
+        """
+        invalid_request, start, end = self.request_object._validate_params('x',
+                                                                           1)
+
+        self.assertTrue(invalid_request.has_errors())
+        self.assertFalse(invalid_request)
+        self.assertEqual(invalid_request.errors[0]['parameter'], 'start')
+        self.assertEqual(invalid_request.errors[0]['message'],
+                         'must be integer')
+
+    def test_validate_params_with_incorrect_end_type(self):
+        """
+        Create request object with incorrect type of end.
+
+        Expect invalid request object with error on end parameter.
+        """
+        invalid_request, start, end = self.request_object._validate_params(1,
+                                                                           'x')
+
+        self.assertTrue(invalid_request.has_errors())
+        self.assertFalse(invalid_request)
+        self.assertEqual(invalid_request.errors[0]['parameter'], 'end')
+        self.assertEqual(invalid_request.errors[0]['message'],
+                         'must be integer')
+
+    def test_validate_params_with_negative_start(self):
+        """
+        Create request object with negative start.
+
+        Expect invalid request object with error on start parameter.
+        """
+        invalid_request, start, end = self.request_object._validate_params(-1,
+                                                                           1)
+
+        self.assertTrue(invalid_request.has_errors())
+        self.assertFalse(invalid_request)
+        self.assertEqual(invalid_request.errors[0]['parameter'], 'start')
+        self.assertEqual(invalid_request.errors[0]['message'],
+                         'must be positive')
+
+    def test_validate_params_with_negative_end(self):
+        """
+        Create request object with negative end.
+
+        Expect invalid request object with error on end parameter.
+        """
+        invalid_request, start, end = self.request_object._validate_params(1,
+                                                                           -1)
+
+        self.assertTrue(invalid_request.has_errors())
+        self.assertFalse(invalid_request)
+        self.assertEqual(invalid_request.errors[0]['parameter'], 'end')
+        self.assertEqual(invalid_request.errors[0]['message'],
+                         'must be positive')
+
+    def test_validate_params_with_start_greater_to_end(self):
+        """
+        Create request object with start greater to end.
+
+        Expect invalid request object with error on end parameter.
+        """
+        invalid_request, start, end = self.request_object._validate_params(2,
+                                                                           1)
+
+        self.assertTrue(invalid_request.has_errors())
+        self.assertFalse(invalid_request)
+        self.assertEqual(invalid_request.errors[0]['parameter'], 'end')
+        self.assertEqual(invalid_request.errors[0]['message'],
+                         'must be greater than or equal to start')
+
+    def test_validate_params_with_empty_arguments(self):
+        """
+        Create request object without arguments.
+
+        Expect invalid request object with error on start parameter.
+        """
+        invalid_request, start, end = self.request_object._validate_params()
+
+        self.assertTrue(invalid_request.has_errors())
+        self.assertFalse(invalid_request)
+        self.assertEqual(invalid_request.errors[0]['parameter'], 'start')
+        self.assertEqual(invalid_request.errors[0]['message'], 'is required')
+
+    def test_validate_params_with_one_argument(self):
+        """
+        Create request object with one argument.
+
+        Expect invalid request object with error on end parameter.
+        """
+        invalid_request, start, end = self.request_object._validate_params(1)
+
+        self.assertTrue(invalid_request.has_errors())
+        self.assertFalse(invalid_request)
+        self.assertEqual(invalid_request.errors[0]['parameter'], 'end')
+        self.assertEqual(invalid_request.errors[0]['message'], 'is required')

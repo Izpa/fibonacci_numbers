@@ -1,9 +1,17 @@
 import unittest
+from unittest.mock import MagicMock, patch
 
 from api import _create_request_object_from_request_args
 from run import app
 
+numbers_list_mock = MagicMock(return_value=[None, None, None, None])
+add_numbers_mock = MagicMock()
 
+
+@patch('repositories.redis.FibonacciNumbersRepo.numbers_list',
+       numbers_list_mock)
+@patch('repositories.redis.FibonacciNumbersRepo.add_numbers',
+       add_numbers_mock)
 class IndexTestCase(unittest.TestCase):
     def setUp(self):
         self.test_client = app.test_client(self)
