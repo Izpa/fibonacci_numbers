@@ -249,9 +249,7 @@ class GetFibonacciSequenceUseCaseTestCase(TestCase):
         self.assertFalse(bool(response_object))
         self.assertEqual(
             response_object.value,
-            {'message': 'start: is required\n'
-                        'end: is required\n'
-                        'end: must be integer',
+            {'message': 'start: is required\nend: is required',
              'type': 'PARAMETERS_ERROR'})
 
     def test_process_request_with_correct_request(self):

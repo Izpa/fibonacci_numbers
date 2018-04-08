@@ -18,9 +18,10 @@ class FibonacciNumbersRepo:
             raise ValueError('end must be greater than or equal to start')
 
         response = self.__client.mget(range(start, end+1))
-        return map(lambda x: x if x is None else float(x), response)
+        return list(map(lambda x: x if x is None else int(x), response))
 
     def add_numbers(self, **numbers):
-        if not all(isinstance(value, float) for value in numbers.values()):
-            raise TypeError('All values must be float')
-        self.__client.mset(numbers)
+        if len(numbers):
+            if not all(isinstance(value, int) for value in numbers.values()):
+                raise TypeError('All values must be integer')
+            self.__client.mset(**numbers)
