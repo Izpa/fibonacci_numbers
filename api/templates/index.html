@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Fibonacci</title>
+    <script type="text/javascript" src="{{url_for('static', filename='jquery.min.js') }}"></script>
+    <link href="{{url_for('static', filename='bootstrap.min.css') }}" rel="stylesheet" />
+</head>
+<body>
+    <form id="from-to-form" onsubmit="return submitForm();">
+        <label for="from">To:</label>
+        <input id="from" type="number" name="from" value="0" min="0" step="1">
+        <label for="to">To:</label>
+        <input id="to" type="number" name="to" value="0" min="0" step="1">
+        <input type="submit" value="Send">
+    </form>
+    <div id="response"></div>
+    <script>
+        function submitForm() {
+            let start = $('#from').val();
+            let end = $('#to').val();
+            let url =  '/fibonachi/?from='.concat(start, '&to=', end);
+            $.ajax({
+                url: url,
+                success: function(result){
+                    let response_div = document.getElementById('response');
+                    response_div.innerHTML = '';
+                    response_div.appendChild(document.createTextNode(result));
+                }
+            });
+            return false;
+        }
+    </script>
+</body>
+</html>

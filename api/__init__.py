@@ -1,6 +1,7 @@
 import json
 
-from flask import Flask, request, Response
+from flask import Flask, request, Response, render_template, \
+    send_from_directory
 from instance.settings import app_config
 from repositories.redis import FibonacciNumbersRepo
 from shared.response_object import ResponseFailure, ResponseSuccess
@@ -27,6 +28,11 @@ def create_app(config_name):
     app = Flask(__name__, instance_relative_config=True)
     app.config.from_object(app_config[config_name])
     app.config.from_pyfile('settings.py')
+
+    @app.route('/')
+    @app.route('/index')
+    def index():
+        return render_template("index.html")
 
     @app.route('/fibonachi/')
     def fibonacci():
