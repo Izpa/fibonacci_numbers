@@ -1,4 +1,5 @@
 [flake8]
+exclude = gunicorn_run.py
 import-order-style = google
 inline-quotes = '
 select=
