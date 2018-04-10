@@ -26,6 +26,14 @@
                     let response_div = document.getElementById('response');
                     response_div.innerHTML = '';
                     response_div.appendChild(document.createTextNode(result));
+                },
+                statusCode: {
+                    500: function() {}
+                },
+                error: function(data){
+                    let response_div = document.getElementById('response');
+                    response_div.innerHTML = '';
+                    response_div.appendChild(document.createTextNode(data.responseText));
                 }
             });
             return false;
