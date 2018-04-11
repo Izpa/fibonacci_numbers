@@ -216,6 +216,11 @@ class GetFibonacciSequenceUseCaseTestCase(TestCase):
             "argument: 'end'")
 
     def test_fibonacci_sequence_add_into_repo(self):
+        """
+        Run _get_fibonacci_sequence with clear repo.
+
+        Except adding calculated numbers into repo.
+        """
         numbers = {str(i): None for i in range(100)}
         self.assertEqual(self.use_case.repo._numbers,
                          numbers)
@@ -230,6 +235,11 @@ class GetFibonacciSequenceUseCaseTestCase(TestCase):
                          numbers)
 
     def test_exist_fibonacci_sequence_get_from_repo_without_calculating(self):
+        """
+        Run _get_fibonacci_sequence with fibonacci sequence, exist in repo.
+
+        Except response without running calculate_fibonacci_number method.
+        """
         self.use_case.repo._numbers.update({
             '18': 2584,
             '19': 4181,
@@ -241,7 +251,12 @@ class GetFibonacciSequenceUseCaseTestCase(TestCase):
         self.assertEqual(
             len(self.use_case._calculate_fibonacci_number.mock_calls), 0)
 
-    def test_process_request_handles_bad_request(self):
+    def test_execute_request_handles_bad_request(self):
+        """
+        Execute usecase with incorrect request object.
+
+        Expect response failure response object with error message.
+        """
         request_object = GetFibonacciSequenceRequestObject()
 
         response_object = self.use_case.execute(request_object)
@@ -252,7 +267,12 @@ class GetFibonacciSequenceUseCaseTestCase(TestCase):
             {'message': 'start: is required\nend: is required',
              'type': 'PARAMETERS_ERROR'})
 
-    def test_process_request_with_correct_request(self):
+    def test_execute_with_correct_request(self):
+        """
+        Execute usecase with correct request object.
+
+        Expect response object with correct fibonacci sequence.
+        """
         request_object = GetFibonacciSequenceRequestObject(18, 21)
         response_object = self.use_case.execute(request_object)
 

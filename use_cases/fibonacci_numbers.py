@@ -6,11 +6,20 @@ from shared.use_case import UseCase
 
 
 class GetFibonacciSequenceUseCase(UseCase):
+    """Usecase class."""
+
     def __init__(self, repo):
         """Set repo."""
         self.repo = repo
 
     def process_request(self, request_object):
+        """
+        Need for usecase implementation.
+
+        :param request_object: request object witn start and end orders numbers
+        of requested fibonacci sequence.
+        :return: response success object
+        """
         start = request_object.start
         end = request_object.end
         numbers = self._get_fibonacci_sequence(start, end)
@@ -18,6 +27,14 @@ class GetFibonacciSequenceUseCase(UseCase):
 
     @staticmethod
     def _calculate_fibonacci_number(order: int):
+        """
+        Calculate fibonacci number by order number.
+
+        Use Binet's formula.
+
+        :param order: order number of fibonacci number
+        :return: fibonacci number
+        """
         if not isinstance(order, int):
             raise TypeError('order must be integer')
         if order < 0:
@@ -31,6 +48,17 @@ class GetFibonacciSequenceUseCase(UseCase):
         return round((pow(left, order) - pow(right, order)) / sqrt_five)
 
     def _get_fibonacci_sequence(self, start: int, end: int):
+        """
+        Get fibonacci sequence from repo or calculate.
+
+        If number of requested sequence doesn't exist in repo, it calculate
+        by previous numbers in sequence. If first two numbers of requested
+        sequence don't exist, they calculate by _calculate_fibonacci_number.
+
+        :param start: start order number of fibonacci number
+        :param end: end order number of fibonacci number
+        :return: list with fibonacci sequence
+        """
         if not isinstance(start, int):
             raise TypeError('start must be integer')
         if not isinstance(end, int):
