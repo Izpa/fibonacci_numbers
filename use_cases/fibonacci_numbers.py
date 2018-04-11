@@ -1,4 +1,4 @@
-"""Module for fibonacci sequence use case class."""
+"""Module for fibonacci sequence usecase class."""
 from math import sqrt
 
 from shared.response_object import ResponseSuccess

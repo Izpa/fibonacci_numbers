@@ -1,4 +1,4 @@
-"""Module for abstract use case class."""
+"""Module for abstract usecase class."""
 from shared.response_object import ResponseFailure
 
 
@@ -11,7 +11,7 @@ class UseCase(object):
 
     def execute(self, request_object):
         """
-        Run use case.
+        Run usecase.
 
         :param request_object:
         :return: ResponseFailure or ResponseSuccess object

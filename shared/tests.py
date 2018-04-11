@@ -10,11 +10,17 @@ class RequestObjectTestCase(TestCase):
     """Tests for RequestObject class."""
 
     def test_invalid_request_object_is_false(self):
+        """
+        Create invalid request object.
+
+        Except false object.
+        """
         request = InvalidRequestObject()
 
         self.assertFalse(bool(request))
 
     def test_invalid_request_object_accepts_errors(self):
+        """Add errors to exist invalid request object."""
         request = InvalidRequestObject()
         request.add_error(parameter='aparam', message='wrong value')
         request.add_error(parameter='anotherparam', message='wrong type')
@@ -23,6 +29,11 @@ class RequestObjectTestCase(TestCase):
         self.assertEqual(len(request.errors), 2)
 
     def test_valid_request_object_is_true(self):
+        """
+        Create valid request object.
+
+        Except true object.
+        """
         request = ValidRequestObject()
         self.assertTrue(bool(request))
 
@@ -31,6 +42,12 @@ class UseCaseTestCase(TestCase):
     """Tests for UseCase class."""
 
     def test_cannot_process_valid_requests(self):
+        """
+        Execute usecase with valid request object.
+
+        Except returning failed response object with SYSTEM_ERROR type and
+        exception message (because process_request() not implemented).
+        """
         valid_request_object = mock.MagicMock()
         valid_request_object.__bool__.return_value = True
 
@@ -45,6 +62,12 @@ class UseCaseTestCase(TestCase):
             'UseCase class')
 
     def test_can_process_invalid_requests_and_returns_response_failure(self):
+        """
+        Execute usecase with invalid request object.
+
+        Except returning failed response object with PARAMETERS_ERROR type and
+        param message.
+        """
         invalid_request_object = InvalidRequestObject()
         invalid_request_object.add_error('some_param', 'some_message')
 
@@ -56,6 +79,12 @@ class UseCaseTestCase(TestCase):
         self.assertEqual(response.message, 'some_param: some_message')
 
     def test_can_manage_generic_exception_from_process_request(self):
+        """
+        Execute usecase with raisin exception in process_request.
+
+        Except returning failed response object with SYSTEM_ERROR type and
+        exception message.
+        """
         use_case = UseCase()
 
         class TestException(Exception):

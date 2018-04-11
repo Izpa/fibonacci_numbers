@@ -1,4 +1,4 @@
-"""Tests for all in use cases package."""
+"""Tests for all in usecases package."""
 from unittest import TestCase
 from unittest.mock import MagicMock
 
