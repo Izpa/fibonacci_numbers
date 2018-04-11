@@ -3,12 +3,24 @@ from instance.settings import FIBONACCI_NUMBERS_REDIS_KEY, redis_client
 
 
 class FibonacciNumbersRepo:
-    """Redis repo for fibonacci numbers."""
+    """
+    Redis repo for fibonacci numbers.
+
+    Key - order number of fibonacci number.
+    Value - fibonacci number.
+    """
 
     __client = redis_client
     __key = FIBONACCI_NUMBERS_REDIS_KEY
 
     def numbers_list(self, start: int, end: int):
+        """
+        Get list of fibonacci sequence from redis.
+
+        :param start: start order number of fibonacci sequence
+        :param end: end order number of fibonacci sequence
+        :return: list with fibonacci sequence
+        """
         if not isinstance(start, int):
             raise TypeError('start must be integer')
         if not isinstance(end, int):
@@ -24,6 +36,12 @@ class FibonacciNumbersRepo:
         return list(map(lambda x: x if x is None else int(x), response))
 
     def add_numbers(self, **numbers):
+        """
+        Add fibonacci numbers to redis.
+
+        :param numbers: dict of fibonacci numbers
+        :return:
+        """
         if len(numbers):
             if not all(isinstance(value, int) for value in numbers.values()):
                 raise TypeError('All values must be integer')

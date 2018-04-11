@@ -55,8 +55,8 @@ class GetFibonacciSequenceUseCase(UseCase):
         by previous numbers in sequence. If first two numbers of requested
         sequence don't exist, they calculate by _calculate_fibonacci_number.
 
-        :param start: start order number of fibonacci number
-        :param end: end order number of fibonacci number
+        :param start: start order number of fibonacci sequence
+        :param end: end order number of fibonacci sequence
         :return: list with fibonacci sequence
         """
         if not isinstance(start, int):
