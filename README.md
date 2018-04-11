@@ -2,6 +2,12 @@
 
 Web-api, which generates sequence of fibonacci numbers
 
+You can see demo on
+
+https://fibonacci-sequence.herokuapp.com/
+
+It may be slow because its hobby heroku dino.
+
 ## Requirements
 Python 3.6
 
