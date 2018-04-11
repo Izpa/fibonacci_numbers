@@ -1,10 +1,12 @@
-"""Test cases for all in repositories package."""
+"""Tests for all in repositories package."""
 from unittest import TestCase
 
 from repositories.redis import FibonacciNumbersRepo
 
 
 class FibonacciNumbersRepoTestCase(TestCase):
+    """Tests for FibonacciNumbersRepo class."""
+
     repo = FibonacciNumbersRepo()
 
     def test_numbers_list_incorrect_start_type(self):

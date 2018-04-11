@@ -3,6 +3,8 @@ from instance.settings import FIBONACCI_NUMBERS_REDIS_KEY, redis_client
 
 
 class FibonacciNumbersRepo:
+    """Redis repo for fibonacci numbers."""
+
     __client = redis_client
     __key = FIBONACCI_NUMBERS_REDIS_KEY
 

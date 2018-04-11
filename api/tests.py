@@ -1,4 +1,4 @@
-"""Test cases for all in api package."""
+"""Tests for all in api package."""
 import unittest
 from unittest.mock import MagicMock, patch
 
@@ -13,7 +13,9 @@ add_numbers_mock = MagicMock()
        numbers_list_mock)
 @patch('repositories.redis.FibonacciNumbersRepo.add_numbers',
        add_numbers_mock)
-class IndexTestCase(unittest.TestCase):
+class FibonacciTestCase(unittest.TestCase):
+    """Tests for fibonacci url."""
+
     def setUp(self):
         self.test_client = app.test_client(self)
 
@@ -55,6 +57,8 @@ class IndexTestCase(unittest.TestCase):
 
 
 class CreateRequestObjectFromRequestArgsTestCase(unittest.TestCase):
+    """Tests for _create_request_object_from_request_args."""
+
     def test_with_all_correct_params(self):
         request_object = _create_request_object_from_request_args(
             {'from': '18', 'to': '21'})

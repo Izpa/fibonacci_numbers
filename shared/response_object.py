@@ -2,6 +2,8 @@
 
 
 class ResponseSuccess(object):
+    """Class for successed responses."""
+
     SUCCESS = 'SUCCESS'
 
     def __init__(self, value=None):
@@ -17,6 +19,8 @@ class ResponseSuccess(object):
 
 
 class ResponseFailure(object):
+    """Class for failured responses."""
+
     RESOURCE_ERROR = 'RESOURCE_ERROR'
     PARAMETERS_ERROR = 'PARAMETERS_ERROR'
     SYSTEM_ERROR = 'SYSTEM_ERROR'

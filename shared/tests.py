@@ -1,4 +1,4 @@
-"""Test cases for all in shared package."""
+"""Tests for all in shared package."""
 from unittest import mock, TestCase
 
 from shared.request_object import InvalidRequestObject, ValidRequestObject
@@ -7,6 +7,8 @@ from shared.use_case import UseCase
 
 
 class RequestObjectTestCase(TestCase):
+    """Tests for RequestObject class."""
+
     def test_invalid_request_object_is_false(self):
         request = InvalidRequestObject()
 
@@ -26,6 +28,8 @@ class RequestObjectTestCase(TestCase):
 
 
 class UseCaseTestCase(TestCase):
+    """Tests for UseCase class."""
+
     def test_cannot_process_valid_requests(self):
         valid_request_object = mock.MagicMock()
         valid_request_object.__bool__.return_value = True
@@ -67,6 +71,8 @@ class UseCaseTestCase(TestCase):
 
 
 class ResponseObjectTestCase(TestCase):
+    """Tests for ResponseObject class."""
+
     def setUp(self):
         self.response_value = {'key': ['value1', 'value2']}
         self.response_type = 'ResponseError'

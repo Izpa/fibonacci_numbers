@@ -2,6 +2,7 @@
 
 
 class InvalidRequestObject(object):
+    """Class for invalid requests."""
 
     def __init__(self):
         """Set errors list."""
@@ -21,6 +22,7 @@ class InvalidRequestObject(object):
 
 
 class ValidRequestObject(object):
+    """Class for valid requests."""
 
     def __nonzero__(self):
         """Nonzero for bool."""
