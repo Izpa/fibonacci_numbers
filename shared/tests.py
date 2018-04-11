@@ -74,35 +74,73 @@ class ResponseObjectTestCase(TestCase):
     """Tests for ResponseObject class."""
 
     def setUp(self):
+        """
+        Set response value, type and message.
+
+        Set before each test in this case.
+        """
         self.response_value = {'key': ['value1', 'value2']}
         self.response_type = 'ResponseError'
         self.response_message = 'This is a response error'
 
     def test_response_success_is_true(self):
+        """
+        Create successed response object.
+
+        Except true object.
+        """
         self.assertTrue(bool(ResponseSuccess(self.response_value)))
 
     def test_response_failure_is_false(self):
+        """
+        Create failed response object.
+
+        Except false object.
+        """
         self.assertFalse(bool(ResponseFailure(self.response_type,
                                               self.response_message)))
 
     def test_response_success_contains_value(self):
+        """
+        Create successed response object with value.
+
+        Except successed response object with correct value.
+        """
         response = ResponseSuccess(self.response_value)
 
         self.assertEqual(response.value, self.response_value)
 
     def test_response_failure_has_type_and_message(self):
+        """
+        Create ResponseFailure object with response type and message.
+
+        Except failed response with response type and message with correct
+        values.
+        """
         response = ResponseFailure(self.response_type, self.response_message)
 
         self.assertEqual(response.type, self.response_type)
         self.assertEqual(response.message, self.response_message)
 
     def test_response_failure_contains_value(self):
+        """
+        Create ResponseFailure object with response type and message.
+
+        Except failed response with response value with type and message keys
+        with correct values.
+        """
         response = ResponseFailure(self.response_type, self.response_message)
 
         self.assertEqual(response.value, {'type': self.response_type,
                                           'message': self.response_message})
 
     def test_response_failure_initialization_with_exception(self):
+        """
+        Create ResponseFailure object with response type and exception.
+
+        Except failed response with response type and message with correct
+        values.
+        """
         response = ResponseFailure(self.response_type,
                                    Exception('Just an error message'))
 
@@ -114,8 +152,7 @@ class ResponseObjectTestCase(TestCase):
         """
         Build ResponseFailure from invalid request object.
 
-        Except response object with PARAMETERS_ERROR type and request object
-        errors messages.
+        Except failed response object.
         """
         response = ResponseFailure.build_from_invalid_request_object(
             InvalidRequestObject())
@@ -126,7 +163,7 @@ class ResponseObjectTestCase(TestCase):
         """
         Build ResponseFailure from invalid request object.
 
-        Except invalid response object with PARAMETERS_ERROR type and request
+        Except failed response object with PARAMETERS_ERROR type and request
         object's errors messages.
         """
         request_object = InvalidRequestObject()
@@ -145,7 +182,7 @@ class ResponseObjectTestCase(TestCase):
         """
         Build ResponseFailure with resource error and with message.
 
-        Except invalid response object with RESOURCE_ERROR type and message.
+        Except failed response object with RESOURCE_ERROR type and message.
         """
         response = ResponseFailure.build_resource_error('test message')
 
@@ -157,7 +194,7 @@ class ResponseObjectTestCase(TestCase):
         """
         Build ResponseFailure with parameters error and with message.
 
-        Except invalid response object with PARAMETERS_ERROR type and message.
+        Except failed response object with PARAMETERS_ERROR type and message.
         """
         response = ResponseFailure.build_parameters_error('test message')
 
@@ -169,7 +206,7 @@ class ResponseObjectTestCase(TestCase):
         """
         Build ResponseFailure with system error and with message.
 
-        Except invalid response object with SYSTEM_ERROR type and message.
+        Except failed response object with SYSTEM_ERROR type and message.
         """
         response = ResponseFailure.build_system_error('test message')
 

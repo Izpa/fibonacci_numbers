@@ -19,7 +19,7 @@ class ResponseSuccess(object):
 
 
 class ResponseFailure(object):
-    """Class for failured responses."""
+    """Class for failed responses."""
 
     RESOURCE_ERROR = 'RESOURCE_ERROR'
     PARAMETERS_ERROR = 'PARAMETERS_ERROR'
