@@ -1,3 +1,4 @@
+"""Base module for run modules."""
 import os
 
 from api import create_app

@@ -1,11 +1,16 @@
+"""Response objects."""
+
+
 class ResponseSuccess(object):
     SUCCESS = 'SUCCESS'
 
     def __init__(self, value=None):
+        """Set type and value."""
         self.type = self.SUCCESS
         self.value = value
 
     def __nonzero__(self):
+        """Nonzero for bool."""
         return True
 
     __bool__ = __nonzero__
@@ -17,6 +22,12 @@ class ResponseFailure(object):
     SYSTEM_ERROR = 'SYSTEM_ERROR'
 
     def __init__(self, type_, message):
+        """
+        Set type and message.
+
+        :param type_: error type.
+        :param message: error message.
+        """
         self.type = type_
         self.message = self._format_message(message)
 
@@ -30,6 +41,7 @@ class ResponseFailure(object):
         return {'type': self.type, 'message': self.message}
 
     def __bool__(self):
+        """Bool."""
         return False
 
     @classmethod

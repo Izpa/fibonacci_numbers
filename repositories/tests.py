@@ -1,3 +1,4 @@
+"""Test cases for all in repositories package."""
 from unittest import TestCase
 
 from repositories.redis import FibonacciNumbersRepo

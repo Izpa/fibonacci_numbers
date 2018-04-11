@@ -1,3 +1,4 @@
+"""Settings for flask application."""
 import os
 
 import redis

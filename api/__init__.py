@@ -1,3 +1,8 @@
+"""
+Base application module.
+
+Contain routing and some additional methods.
+"""
 import json
 
 from flask import Flask, render_template, request, Response
@@ -24,6 +29,12 @@ def _create_request_object_from_request_args(request_args: dict):
 
 
 def create_app(config_name):
+    """
+    Create flask application.
+
+    :param config_name: application configuration name.
+    :return: flask application.
+    """
     app = Flask(__name__, instance_relative_config=True)
     app.config.from_object(app_config[config_name])
     app.config.from_pyfile('settings.py')

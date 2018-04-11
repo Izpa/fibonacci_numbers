@@ -1,3 +1,4 @@
+"""Test cases for all in shared package."""
 from unittest import mock, TestCase
 
 from shared.request_object import InvalidRequestObject, ValidRequestObject
@@ -104,12 +105,24 @@ class ResponseObjectTestCase(TestCase):
         self.assertEqual(response.message, 'Exception: Just an error message')
 
     def test_response_failure_from_invalid_request_object(self):
+        """
+        Build ResponseFailure from invalid request object.
+
+        Except response object with PARAMETERS_ERROR type and request object
+        errors messages.
+        """
         response = ResponseFailure.build_from_invalid_request_object(
             InvalidRequestObject())
 
         self.assertFalse(bool(response))
 
     def test_response_failure_from_invalid_request_object_with_errors(self):
+        """
+        Build ResponseFailure from invalid request object.
+
+        Except invalid response object with PARAMETERS_ERROR type and request
+        object's errors messages.
+        """
         request_object = InvalidRequestObject()
         request_object.add_error('path', 'Is mandatory')
         request_object.add_error('path', "can't be blank")
@@ -123,6 +136,11 @@ class ResponseObjectTestCase(TestCase):
                          "path: Is mandatory\npath: can't be blank")
 
     def test_response_failure_build_resource_error(self):
+        """
+        Build ResponseFailure with resource error and with message.
+
+        Except invalid response object with RESOURCE_ERROR type and message.
+        """
         response = ResponseFailure.build_resource_error('test message')
 
         self.assertFalse(bool(response))
@@ -130,6 +148,11 @@ class ResponseObjectTestCase(TestCase):
         self.assertEqual(response.message, 'test message')
 
     def test_response_failure_build_parameters_error(self):
+        """
+        Build ResponseFailure with parameters error and with message.
+
+        Except invalid response object with PARAMETERS_ERROR type and message.
+        """
         response = ResponseFailure.build_parameters_error('test message')
 
         self.assertFalse(bool(response))
@@ -137,6 +160,11 @@ class ResponseObjectTestCase(TestCase):
         self.assertEqual(response.message, 'test message')
 
     def test_response_failure_build_system_error(self):
+        """
+        Build ResponseFailure with system error and with message.
+
+        Except invalid response object with SYSTEM_ERROR type and message.
+        """
         response = ResponseFailure.build_system_error('test message')
 
         self.assertFalse(bool(response))

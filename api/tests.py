@@ -1,3 +1,4 @@
+"""Test cases for all in api package."""
 import unittest
 from unittest.mock import MagicMock, patch
 

@@ -1,3 +1,4 @@
+"""Module for flask server run."""
 from base_run import app
 
 if __name__ == '__main__':

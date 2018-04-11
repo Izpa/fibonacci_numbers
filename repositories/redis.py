@@ -1,3 +1,4 @@
+"""Redis repository for application."""
 from instance.settings import FIBONACCI_NUMBERS_REDIS_KEY, redis_client
 
 
