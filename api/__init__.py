@@ -8,9 +8,9 @@ import json
 from flask import Flask, render_template, request, Response
 from instance.settings import app_config
 from repositories.redis import FibonacciNumbersRepo
-from shared.response_object import ResponseFailure, ResponseSuccess
-from use_cases.fibonacci_numbers import GetFibonacciSequenceUseCase
-from use_cases.request_objects import GetFibonacciSequenceRequestObject
+from shared.use_case import ResponseFailure, ResponseSuccess
+from use_cases.fibonacci_numbers import GetFibonacciSequenceRequest, \
+    GetFibonacciSequenceUseCase
 
 STATUS_CODES = {
     ResponseSuccess.SUCCESS: 200,
@@ -20,12 +20,12 @@ STATUS_CODES = {
 }
 
 
-def _create_request_object_from_request_args(request_args: dict):
+def _create_request_from_request_args(request_args: dict):
     params = {
         'start': request_args.get('from'),
         'end': request_args.get('to')
     }
-    return GetFibonacciSequenceRequestObject(**params)
+    return GetFibonacciSequenceRequest(**params)
 
 
 def create_app(config_name):
@@ -46,10 +46,10 @@ def create_app(config_name):
 
     @app.route('/fibonachi/')
     def fibonacci():
-        request_object = _create_request_object_from_request_args(request.args)
+        use_case_request = _create_request_from_request_args(request.args)
         repo = FibonacciNumbersRepo()
         use_case = GetFibonacciSequenceUseCase(repo)
-        response = use_case.execute(request_object)
+        response = use_case.execute(use_case_request)
         return Response(json.dumps(response.value).strip('"'),
                         status=STATUS_CODES[response.type])
 

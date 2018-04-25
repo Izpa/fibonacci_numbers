@@ -1,40 +1,28 @@
 """Tests for all in shared package."""
 from unittest import mock, TestCase
 
-from shared.request_object import InvalidRequestObject, ValidRequestObject
-from shared.response_object import ResponseFailure, ResponseSuccess
-from shared.use_case import UseCase
+from shared.use_case import Request, ResponseFailure, ResponseSuccess, UseCase
 
 
 class RequestObjectTestCase(TestCase):
-    """Tests for RequestObject class."""
+    """Tests for Request class."""
 
-    def test_invalid_request_object_is_false(self):
-        """
-        Create invalid request object.
-
-        Except false object.
-        """
-        request = InvalidRequestObject()
-
-        self.assertFalse(bool(request))
-
-    def test_invalid_request_object_accepts_errors(self):
+    def test_invalid_request_accepts_errors(self):
         """Add errors to exist invalid request object."""
-        request = InvalidRequestObject()
+        request = Request()
         request.add_error(parameter='aparam', message='wrong value')
         request.add_error(parameter='anotherparam', message='wrong type')
 
         self.assertTrue(request.has_errors())
         self.assertEqual(len(request.errors), 2)
 
-    def test_valid_request_object_is_true(self):
+    def test_valid_request_is_true(self):
         """
         Create valid request object.
 
         Except true object.
         """
-        request = ValidRequestObject()
+        request = Request()
         self.assertTrue(bool(request))
 
 
@@ -48,11 +36,11 @@ class UseCaseTestCase(TestCase):
         Except returning failed response object with SYSTEM_ERROR type and
         exception message (because process_request() not implemented).
         """
-        valid_request_object = mock.MagicMock()
-        valid_request_object.__bool__.return_value = True
+        valid_request = mock.MagicMock()
+        valid_request.__bool__.return_value = True
 
         use_case = UseCase()
-        response = use_case.execute(valid_request_object)
+        response = use_case.execute(valid_request)
 
         self.assertFalse(response)
         self.assertEqual(response.type, ResponseFailure.SYSTEM_ERROR)
@@ -68,11 +56,11 @@ class UseCaseTestCase(TestCase):
         Except returning failed response object with PARAMETERS_ERROR type and
         param message.
         """
-        invalid_request_object = InvalidRequestObject()
-        invalid_request_object.add_error('some_param', 'some_message')
+        invalid_request = Request()
+        invalid_request.add_error('some_param', 'some_message')
 
         use_case = UseCase()
-        response = use_case.execute(invalid_request_object)
+        response = use_case.execute(invalid_request)
 
         self.assertFalse(response)
         self.assertEqual(response.type, ResponseFailure.PARAMETERS_ERROR)
@@ -177,30 +165,30 @@ class ResponseObjectTestCase(TestCase):
         self.assertEqual(response.type, self.response_type)
         self.assertEqual(response.message, 'Exception: Just an error message')
 
-    def test_response_failure_from_invalid_request_object(self):
+    def test_response_failure_from_invalid_request(self):
         """
         Build ResponseFailure from invalid request object.
 
         Except failed response object.
         """
-        response = ResponseFailure.build_from_invalid_request_object(
-            InvalidRequestObject())
+        response = ResponseFailure.build_from_invalid_request(
+            Request())
 
         self.assertFalse(bool(response))
 
-    def test_response_failure_from_invalid_request_object_with_errors(self):
+    def test_response_failure_from_invalid_request_with_errors(self):
         """
         Build ResponseFailure from invalid request object.
 
         Except failed response object with PARAMETERS_ERROR type and request
         object's errors messages.
         """
-        request_object = InvalidRequestObject()
-        request_object.add_error('path', 'Is mandatory')
-        request_object.add_error('path', "can't be blank")
+        request = Request()
+        request.add_error('path', 'Is mandatory')
+        request.add_error('path', "can't be blank")
 
-        response = ResponseFailure.build_from_invalid_request_object(
-            request_object)
+        response = ResponseFailure.build_from_invalid_request(
+            request)
 
         self.assertFalse(bool(response))
         self.assertEqual(response.type, ResponseFailure.PARAMETERS_ERROR)

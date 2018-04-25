@@ -33,7 +33,7 @@ class FibonacciNumbersRepo:
             raise ValueError('end must be greater than or equal to start')
 
         response = self.__client.mget(range(start, end+1))
-        return list(map(lambda x: x if x is None else int(x), response))
+        return [i if i is None else int(i) for i in response]
 
     def add_numbers(self, **numbers):
         """

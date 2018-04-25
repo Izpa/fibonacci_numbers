@@ -4,7 +4,7 @@ import os
 import redis
 
 
-class Config(object):
+class Config:
     """Parent configuration class."""
 
     DEBUG = False

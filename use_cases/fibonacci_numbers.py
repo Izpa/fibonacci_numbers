@@ -1,8 +1,7 @@
 """Module for fibonacci sequence usecase class."""
 from math import sqrt
 
-from shared.response_object import ResponseSuccess
-from shared.use_case import UseCase
+from shared.use_case import Request, ResponseSuccess, UseCase
 
 
 class GetFibonacciSequenceUseCase(UseCase):
@@ -12,16 +11,16 @@ class GetFibonacciSequenceUseCase(UseCase):
         """Set repo."""
         self.repo = repo
 
-    def process_request(self, request_object):
+    def process_request(self, request):
         """
         Need for usecase implementation.
 
-        :param request_object: request object witn start and end orders numbers
+        :param request: request object witn start and end orders numbers
         of requested fibonacci sequence.
         :return: response success object
         """
-        start = request_object.start
-        end = request_object.end
+        start = request.start
+        end = request.end
         numbers = self._get_fibonacci_sequence(start, end)
         return ResponseSuccess(numbers)
 
@@ -85,3 +84,34 @@ class GetFibonacciSequenceUseCase(UseCase):
         self.repo.add_numbers(**numbers_for_save)
 
         return numbers
+
+
+class GetFibonacciSequenceRequest(Request):
+    """Request object foe fibonacci sequence."""
+
+    def __init__(self, start=None, end=None):
+        """Check and set params and errors."""
+        super().__init__()
+        if start is None:
+            self.add_error('start', 'is required')
+        else:
+            try:
+                start = int(start)
+                if start < 0:
+                    self.add_error('start', 'must be positive')
+            except ValueError:
+                self.add_error('start', 'must be integer')
+        if end is None:
+            self.add_error('end', 'is required')
+        else:
+            try:
+                end = int(end)
+                if end < 0:
+                    self.add_error('end', 'must be positive')
+            except ValueError:
+                self.add_error('end', 'must be integer')
+        if not self.has_errors() and end < start:
+            self.add_error('end', 'must be greater than or equal to start')
+
+        self.start = start
+        self.end = end
