@@ -1,9 +1,5 @@
-import os
-
-from api import create_app
-
-config_name = os.getenv('APP_SETTINGS')
-app = create_app(config_name)
+"""Module for flask server run."""
+from base_run import app
 
 if __name__ == '__main__':
-    app.run(host="0.0.0.0", port=80)
+    app.run(host='0.0.0.0', port=80)

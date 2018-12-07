@@ -1,0 +1,24 @@
+{
+  "name": "fibonacci_numbers",
+  "scripts": {
+  },
+  "env": {
+    "PAPERTRAIL_API_TOKEN": {
+      "required": true
+    },
+    "REDIS_URL": {
+      "required": true
+    }
+  },
+  "formation": {
+  },
+  "addons": [
+    "papertrail",
+    "heroku-redis"
+  ],
+  "buildpacks": [
+    {
+      "url": "heroku/python"
+    }
+  ]
+}

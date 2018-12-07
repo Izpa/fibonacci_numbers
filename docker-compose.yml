@@ -1,0 +1,19 @@
+web:
+  build: .
+  dockerfile: Dockerfile
+  ports:
+    - '8000:80'
+  environment:
+    - SECRET=2394utrjfdg920844258hgj9485hglkdmv
+    - APP_SETTINGS=production
+    - FLASK_APP=run.py
+    - REDIS_URL=redis://redis:6379/0
+  links:
+    - redis:redis
+
+redis:
+    image: redis
+    ports:
+      - '6379:6379'
+    volumes:
+      - 'redisdata:/data'
